@@ -770,8 +770,7 @@ document.addEventListener('touchstart', hideLoadingScreen);
 
 const backgroundMusic = new Howl({
   src: [
-  
-    '/audio/ES_Pillow (Instrumental Version) - SCENE.ogg',
+
     '/audio/ES_Pillow (Instrumental Version) - SCENE.mp3'
   ],
   loop: true,
