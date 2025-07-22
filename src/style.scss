@@ -148,32 +148,20 @@ h4 {
 
 
 //botton
-.modal-exit-button {
-   font-size: 20px;
-   font-family: "ALOCHOVEY Free Trial";
-  margin: 10px;
-  padding: 5px 5px 0px 5px;
-  width: 32px;
-  height: 32px;
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
   align-items: center;
-  
-  
-
-  position: absolute;
-  top: 10px;
-  right: 10px;
-   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  touch-action: manipulation; /* help touch devices */
+  z-index: 9999;
+}
 
 
-  background-color: vars.$base-purple;
-  color: vars.$light-purple;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: vars.$base-purple;
-  }
+.modal-overlay.active {
+  display: flex;
 }
 
 //modals

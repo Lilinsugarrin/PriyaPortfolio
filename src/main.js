@@ -53,53 +53,106 @@ let wacom;
 let fourth;
 let song;
 
+document.addEventListener('click', (e) => {
+  document.querySelectorAll('.modal').forEach(modal => {
+    const isClickInside = modal.contains(e.target);
+    const isVisible = getComputedStyle(modal).display !== 'none';
 
-//modals
-const modals={
-about: document.querySelector(".modal.about"),
-project: document.querySelector(".modal.project"),
-work: document.querySelector(".modal.work"),
-contact: document.querySelector(".modal.contact"),
+    if (!isClickInside && isVisible) {
+      hideModal(modal); // 👈 your existing function
+    }
+  });
+});
 
-};
-
-let touchHappened = true;
-
-document.querySelectorAll(".modal-exit-button").forEach(button=>{
-
-  button.addEventListener("touched",(e)=>{
-    touchHappened = true;
-    const modal= e.target.closest(".modal");
-    hideModal(modal);
-  },{passive:false});
-    button.addEventListener("click",(e)=>{
-      if (touchHappened) return;
-    const modal= e.target.closest(".modal");
-    hideModal(modal);
-  },{passive: false});
-  
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      const modal = overlay.querySelector('.modal');
+      hideModal(modal);
+    }
+  });
+    overlay.addEventListener('pointerup', (e) => {
+    if (e.target === overlay) {
+      const modal = overlay.querySelector('.modal');
+      hideModal(modal);
+    }
+  });
 });
 
 
-const showModal=(modal)=>{
-  modal.style.display= "block"
-  
-  gsap.set(modal,{opacity:0});
-  gsap.to(modal,{
-    opacity:1,
+
+// Modal elements
+const modals = {
+  about: document.querySelector(".modal.about"),
+  project: document.querySelector(".modal.project"),
+  work: document.querySelector(".modal.work"),
+  contact: document.querySelector(".modal.contact"),
+};
+
+// Handle touch flag for avoiding double triggers on touch devices
+let touchHappened = false;
+
+document.querySelectorAll(".modal-exit-button").forEach((button) => {
+  button.addEventListener("pointerup", (e) => {
+  const modal = e.target.closest(".modal");
+  hideModal(modal);
+});
+
+  button.addEventListener("touchstart", (e) => {
+    touchHappened = true;
+    const modal = e.target.closest(".modal");
+    hideModal(modal);
+  });
+
+  button.addEventListener("click", (e) => {
+    if (touchHappened) {
+      touchHappened = false;
+      return;
+    }
+    const modal = e.target.closest(".modal");
+    hideModal(modal);
+  });
+});
+
+
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      const modal = overlay.querySelector('.modal');
+      hideModal(modal);
+    }
+  });
+});
+
+const showModal = (modal) => {
+  if (!modal) return;
+  const overlay = modal.closest('.modal-overlay');
+  if (!overlay) return;
+
+  overlay.style.display = "flex"; // or "block" depending on your CSS
+  modal.style.display = "block";
+
+  gsap.set(modal, { opacity: 0 });
+  gsap.to(modal, {
+    opacity: 1,
     duration: 0.5,
   });
 };
 
-const hideModal=(modal)=>{
-    
-  gsap.to(modal,{
-    opacity:0,
+const hideModal = (modal) => {
+  if (!modal) return;
+  const overlay = modal.closest('.modal-overlay');
+  if (!overlay) return;
+
+  gsap.to(modal, {
+    opacity: 0,
     duration: 0.5,
-
+    onComplete: () => {
+      modal.style.display = "none";
+      overlay.style.display = "none";
+    },
   });
-}
-
+};
 
 const zAxis = [];
 const yAxis = [];
@@ -198,6 +251,23 @@ pointer.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
 
 
 });
+
+window.addEventListener("pointermove", (e) => {
+  pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+  pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
+});
+
+window.addEventListener("pointerdown", (e) => {
+  pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+  pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
+});
+
+window.addEventListener("pointerup", (e) => {
+  pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+  pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  handleRaycasterInteraction();
+});
+
 
 window.addEventListener(
   "touchstart",
@@ -649,10 +719,14 @@ document.addEventListener('click', hideLoadingScreen);
 document.addEventListener('touchstart', hideLoadingScreen);
 
 const backgroundMusic = new Howl({
-  src: ['/audio/ES_Pillow (Instrumental Version) - SCENE.ogg'],
+  src: [
+  
+    '/audio/ES_Pillow (Instrumental Version) - SCENE.ogg'
+  ],
   loop: true,
-  volume: 0, // start muted
+  volume: 0,
 });
+
 
 function fadeInMusicAndHideLoading() {
   backgroundMusic.play();
@@ -667,3 +741,8 @@ function fadeInMusicAndHideLoading() {
 document.querySelector('.loading-screen-button').addEventListener('click', () => {
   fadeInMusicAndHideLoading();
 });
+
+// Attach both touch and click
+const loadingBtn = document.querySelector('.loading-screen-button');
+loadingBtn.addEventListener('click', fadeInMusicAndHideLoading);
+loadingBtn.addEventListener('touchstart', fadeInMusicAndHideLoading, { passive: true });
