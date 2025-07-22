@@ -172,6 +172,36 @@ const socialLinks ={Project: "https://priya3dprojects.my.canva.site/",
   Work: "https://priya3dprojects.my.canva.site/#page-PBpFJrmvRSmlLWsY",
 }
 
+//socialwithTouch
+const handleInteraction = (e) => {
+  if (currentIntersects.length > 0) {
+    const object = currentIntersects[0].object;
+
+    // Open external link
+    Object.entries(socialLinks).forEach(([key, url]) => {
+      if (object.name.includes(key)) {
+        const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+        if (newWindow) newWindow.opener = null;
+      }
+    });
+
+    // Show modal
+    if (object.name.includes("AboutMe")) {
+      showModal(modals.about);
+    } else if (object.name.includes("Project")) {
+      showModal(modals.project);
+    } else if (object.name.includes("Work")) {
+      showModal(modals.work);
+    } else if (object.name.includes("Contact")) {
+      showModal(modals.contact);
+    }
+  }
+};
+
+window.addEventListener("click", handleInteraction);
+window.addEventListener("pointerup", handleInteraction); // works for both mouse and touch
+
+
 const raycasterObjects = [];
 let currentIntersects = [];
 
@@ -495,6 +525,15 @@ controls.maxPolarAngle = Math.PI /2;
 controls.minAzimuthAngle =-Math.PI/5;
 controls.maxAzimuthAngle = Math.PI/3;
 
+//mobileINteract
+controls.enableZoom = true;
+controls.zoomSpeed = 0.5;
+
+controls.enableRotate = true;
+controls.rotateSpeed = 0.5;
+
+controls.enablePan = false; // Prevent accidental panning on touch
+
 controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
 				controls.dampingFactor = 0.05;
 controls.update();
@@ -732,7 +771,8 @@ document.addEventListener('touchstart', hideLoadingScreen);
 const backgroundMusic = new Howl({
   src: [
   
-    '/audio/ES_Pillow (Instrumental Version) - SCENE.ogg'
+    '/audio/ES_Pillow (Instrumental Version) - SCENE.ogg',
+    '/audio/ES_Pillow (Instrumental Version) - SCENE.mp3'
   ],
   loop: true,
   volume: 0,
