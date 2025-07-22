@@ -53,16 +53,10 @@ let wacom;
 let fourth;
 let song;
 
-document.addEventListener('click', (e) => {
-  document.querySelectorAll('.modal').forEach(modal => {
-    const isClickInside = modal.contains(e.target);
-    const isVisible = getComputedStyle(modal).display !== 'none';
+let justOpenedModal = false;
 
-    if (!isClickInside && isVisible) {
-      hideModal(modal); // 👈 your existing function
-    }
-  });
-});
+
+
 
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
 
@@ -121,10 +115,11 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
 
 const showModal = (modal) => {
   if (!modal) return;
+  justOpenedModal = true; // prevent closing on same click
   const overlay = modal.closest('.modal-overlay');
   if (!overlay) return;
 
-  overlay.style.display = "flex"; // or "block" depending on your CSS
+  overlay.style.display = "flex";
   modal.style.display = "block";
 
   gsap.set(modal, { opacity: 0 });
@@ -132,7 +127,13 @@ const showModal = (modal) => {
     opacity: 1,
     duration: 0.5,
   });
+
+  // reset the flag shortly after to allow closing
+  setTimeout(() => {
+    justOpenedModal = false;
+  }, 100); // 100ms delay is usually enough
 };
+
 
 const hideModal = (modal) => {
   if (!modal) return;
@@ -148,6 +149,21 @@ const hideModal = (modal) => {
     },
   });
 };
+
+document.addEventListener('click', (e) => {
+  if (justOpenedModal) return; // skip if modal was just opened
+
+  document.querySelectorAll('.modal').forEach(modal => {
+    const isClickInside = modal.contains(e.target);
+    const isVisible = getComputedStyle(modal).display !== 'none';
+
+    if (!isClickInside && isVisible) {
+      hideModal(modal);
+    }
+  });
+});
+
+
 
 const zAxis = [];
 const yAxis = [];
