@@ -793,6 +793,29 @@ document.querySelector('.loading-screen-button').addEventListener('click', () =>
 });
 
 // Attach both touch and click
+
+
+//ios
+onplayerror: (id) => {
+  bg.once('unlock', () => bg.play());
+}
+
 const loadingBtn = document.querySelector('.loading-screen-button');
+loadingBtn.addEventListener('click', () => {
+  const bg = new Howl({
+    src: ['/audio/ES_Pillow.mp3'],  // make sure the path is correct
+    html5: true,                     // force HTML5 for iOS fallback
+    loop: true,
+    volume: 1,
+    onloaderror: (id, err) => console.error('Load error', err),
+    onplayerror: (id, err) => {
+      console.error('Play error', err);
+      bg.once('unlock', () => bg.play());
+    }
+  });
+  bg.play();
+  document.querySelector('.loading-screen').classList.add('slide-up');
+});
+
 loadingBtn.addEventListener('click', fadeInMusicAndHideLoading);
 loadingBtn.addEventListener('touchstart', fadeInMusicAndHideLoading, { passive: true });
