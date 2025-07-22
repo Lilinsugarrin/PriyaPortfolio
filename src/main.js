@@ -65,12 +65,7 @@ document.addEventListener('click', (e) => {
 });
 
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) {
-      const modal = overlay.querySelector('.modal');
-      hideModal(modal);
-    }
-  });
+
     overlay.addEventListener('pointerup', (e) => {
     if (e.target === overlay) {
       const modal = overlay.querySelector('.modal');
