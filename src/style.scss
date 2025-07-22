@@ -1,0 +1,252 @@
+@use "./styles/fonts.scss";
+@use "./styles/reset.scss";
+@use "./styles/varible.scss" as vars;
+*{
+  box-sizing: border-box;
+  padding: 0;
+  bottom: 0;
+  
+}//reset to the default
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+//Experience
+#experience{
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+
+  #experience-canvas{
+      height: 100%;
+      width: 100%;
+      z-index: 2;
+  }
+}
+
+.overlay-image{
+  position:absolute;
+  margin: 5px;
+  font-size:medium;
+  color: white;
+  font-family:  "Wastinger Display Free Personal";
+  width:fit-content;
+  height:fit-content;
+  bottom: 5px;
+  right: 5px;
+}
+
+.overlay-text {
+  position: absolute;  // position over the canvas
+  top: 20px;
+  left: 20px;
+  z-index: 10;         // make sure it's above the canvas
+    opacity: 1;
+  transition: opacity 5s ease;
+  animation: fadeOut 1s ease 10s forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+p{
+    padding: 10px;
+    font-size: medium;
+  margin: 10px;
+  color: antiquewhite;
+  font-family: "ALOCHOVEY Free Trial";
+}
+
+.frame{
+  margin: 10px;
+  padding: 0px;
+  max-width: 100%; 
+  
+}
+
+
+.title1 {
+  font-size: 50px;
+  padding: 20px;
+  margin: 20px;
+  color: vars.$base-purple;
+  font-family: "Wastinger Display Free Personal";
+}
+
+h1 {
+ font-size: 28px;
+  font-family: "Wastinger Display Free Personal";
+  background-color: vars.$base-purple;
+  color:antiquewhite;
+  padding: 10px 20px;
+  border-radius: 30px;
+  max-width: 100%;          // makes sure it doesn't overflow
+  white-space: nowrap;      // keeps it on one line
+  overflow: hidden;         // hides extra text
+  text-overflow: ellipsis;  // adds "..." if too long
+  display: inline-block;    // ensures it wraps just around the text
+}
+
+
+h2 {
+  font-size: 20px;
+  padding: 10px 20px;
+  margin: 20px;
+  color: vars.$base-purple;
+  font-family: "Wastinger Display Free Personal";
+}
+
+h3 {
+  font-size: 18px;
+  font-family:'Times New Roman', Times, serif;
+  color: vars.$dark-blue;
+  padding: 10px 20px;
+  margin: 10px;
+}
+
+h4 {
+  font-size: 18px;
+  border-radius: 10px;
+  background-color:vars.$light-pink;
+  font-family:'Times New Roman', Times, serif;
+  color: vars.$dark-blue;
+  padding: 10px 20px;
+ box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin: 10px;
+}
+
+
+
+//imageHeader
+.modal-profile-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%; // makes it a circle
+  object-fit: cover;
+  object-position: center;
+  border: 3px solid vars.$base-purple; // optional border
+  margin: 0 auto 20px;
+  display: block;
+  float: left;
+  margin-right: 20px;
+
+   transform: scale(1.2);   
+}
+
+
+//botton
+.modal-exit-button {
+   font-size: 20px;
+   font-family: "ALOCHOVEY Free Trial";
+  margin: 10px;
+  padding: 5px 5px 0px 5px;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  
+  
+
+  position: absolute;
+  top: 10px;
+  right: 10px;
+   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+
+  background-color: vars.$base-purple;
+  color: vars.$light-purple;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: vars.$base-purple;
+  }
+}
+
+//modals
+.modal {
+  position: absolute;
+  padding: 40px;
+  top: 50%;
+  left: 50%;
+  max-width: 700px;
+  width: 90vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  line-height: 1.5;
+  z-index: 9999;
+  display: none;
+  background-color: vars.$light-purple;
+  border-radius: 40px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+   scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+
+.modal::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.loading-screen-button{
+  background-color: vars.$base-purple;
+  border: transparent;
+  color: vars.$light-purple;
+padding: 10px;
+  border-radius: 10px;
+  width: auto;
+  height:60px;
+  font-family: "Wastinger Display Free Personal";
+  font-size: 20px;
+
+}
+
+.loading-screen {
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: vars.$light-purple;
+  color:vars.$base-purple;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  transition: transform 1s ease-in-out;
+
+   display: flex;
+  flex-direction: column;   /* 👈 Stack title and button vertically */
+  align-items: center;      /* 👈 Center horizontally */
+  justify-content: center;  /* 👈 Center vertically */
+  gap: 2rem;                /* 👈 Space between title and button */
+  transform: translateY(0%);
+
+}
+
+.loading-screen.slide-up {
+  transform: translateY(-100%);
+}
+
+
+
+
+
+
+

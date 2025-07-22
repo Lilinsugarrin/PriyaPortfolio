@@ -1,0 +1,11 @@
+$base-purple: #735f8b;
+$light-purple: #e1d3f1;
+$dark-blue:#483248;
+$base-white:#ffffff;
+$light-pink:#ebe0e7;
+
+@mixin centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
